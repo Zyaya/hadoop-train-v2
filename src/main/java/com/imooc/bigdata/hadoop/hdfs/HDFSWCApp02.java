@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 /**
@@ -23,16 +24,22 @@ import java.util.Set;
 public class HDFSWCApp02 {
     public static void main(String[] args) throws Exception{
 
+        Properties properties = ParamsUtils.getProperties();
+
         // 1)读取HDFS上的文件 ==> HDFS API
-        Path input = new Path(("/hdfsapi/test/hello.txt"));
+        Path input = new Path(properties.getProperty(Constants.INPUT_PATH));
+
         // 获取到要操作的文件系统
         Configuration configuration = new Configuration();
         configuration.set("dfs.client.use.datanode.hostname","true");
-        FileSystem fs = FileSystem.get(new URI("hdfs://39.108.114.91:8020"), configuration,"hadoop");
+        FileSystem fs = FileSystem.get(new URI(properties.getProperty(Constants.HDFS_URI)), configuration,"hadoop");
         RemoteIterator<LocatedFileStatus> files = fs.listFiles(input, false);
 
+        //TODO... 通过反射创建一个对象
+        Class<?> clazz = Class.forName(properties.getProperty(Constants.MAPPER_CLASS));
+        ImoocMapper mapper = (ImoocMapper)clazz.newInstance();
+
         //ImoocMapper mapper = new WordCountMapper();
-        ImoocMapper mapper = new WordCountMapper();
         ImoocContext context = new ImoocContext();
         while (files.hasNext()){
             LocatedFileStatus file = files.next();
@@ -59,9 +66,9 @@ public class HDFSWCApp02 {
 
 
         // 4）将结果输出到HDFS ==> HDFS API
-        Path output = new Path("/hdfsapi/output/");
+        Path output = new Path(properties.getProperty(Constants.OUTPUT_PATH));
         //创建文件
-        FSDataOutputStream out = fs.create(new Path(output,"wc2.out"));
+        FSDataOutputStream out = fs.create(new Path(output,properties.getProperty(Constants.OUTPUT_FILE)));
 
         // TODO 将第三步缓存中的内容输出到out中去
         Set<Map.Entry<Object, Object>> entries = contextMap.entrySet();
