@@ -7,11 +7,18 @@ import org.apache.hadoop.mapreduce.Mapper;
 import java.io.IOException;
 
 /**
- * Created by bbHead on 2020/1/13 00:09
+ * 自定义mapper处理类
  */
 public class AccessMapper extends Mapper<LongWritable, Text, Text, Access>{
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-        super.map(key, value, context);
+
+        String[] lines = value.toString().split("\t");
+        String phone = lines[1]; //取出手机号
+        long up = Long.parseLong(lines[lines.length-2]);
+        long down = Long.parseLong(lines[lines.length-3]);
+
+        context.write(new Text(phone), new Access(phone, up, down));
+
     }
 }

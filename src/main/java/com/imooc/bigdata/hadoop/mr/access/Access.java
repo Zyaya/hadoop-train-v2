@@ -47,6 +47,14 @@ public class Access implements Writable {
 
     public Access(){}
 
+    public Access(String phone, long up, long down){
+        this.phone = phone;
+        this.up = up;
+        this.down = down;
+        this.sum = up + down;
+
+    }
+
     public String getPhone() {
         return phone;
     }
