@@ -15,9 +15,10 @@ public class AccessMapper extends Mapper<LongWritable, Text, Text, Access>{
 
         String[] lines = value.toString().split("\t");
         String phone = lines[1]; //取出手机号
-        long up = Long.parseLong(lines[lines.length-2]);
-        long down = Long.parseLong(lines[lines.length-3]);
+        long up = Long.parseLong(lines[lines.length-3]);
+        long down = Long.parseLong(lines[lines.length-2]);
 
+        System.out.println(up);
         context.write(new Text(phone), new Access(phone, up, down));
 
     }

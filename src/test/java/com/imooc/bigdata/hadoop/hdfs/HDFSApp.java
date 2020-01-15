@@ -52,7 +52,7 @@ public class HDFSApp {
 
     @Test //单元测试一定要加一个Test，否则不认
     public void mkdir() throws Exception{
-        fileSystem.mkdirs(new Path("/hdfsapi"));
+        fileSystem.mkdirs(new Path("/hdfsapi2"));
     }
 
     /**
@@ -70,7 +70,7 @@ public class HDFSApp {
      */
     @Test
     public void create() throws Exception{
-        FSDataOutputStream out = fileSystem.create(new Path("/hdfsapi/test/b.txt"));
+        FSDataOutputStream out = fileSystem.create(new Path("/hdfsapi/test/yaya.txt"));
         out.writeUTF("hello pk:replication 1");
         out.flush();
         out.close();

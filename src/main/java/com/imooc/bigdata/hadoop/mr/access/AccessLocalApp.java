@@ -13,12 +13,13 @@ import java.io.IOException;
  * Created by bbHead on 2020/1/15 00:46
  */
 public class AccessLocalApp {
-    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
+    public static void main(String[] args) throws Exception {
         Configuration configuration = new Configuration();
 
         Job job = Job.getInstance(configuration);
 
         job.setJarByClass(AccessLocalApp.class);
+
         job.setMapperClass(AccessMapper.class);
         job.setReducerClass(AccessReducer.class);
 
