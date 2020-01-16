@@ -16,3 +16,32 @@ Mapper：把手机号、上行流量、下行流量拆开
     把手机号作为key，把Access作为value写出去
 
 Reducer：（13632982692,<Access,Access>)
+
+public class HashPartitioner<K2, V2> implements Partitioner<K2, V2> {
+
+  public void configure(JobConf job) {}
+
+  /** Use {@link Object#hashCode()} to partition. */
+  public int getPartition(K2 key, V2 value,
+                          int numReduceTasks) {
+    return (key.hashCode() & Integer.MAX_VALUE) % numReduceTasks;
+  }
+
+}
+
+numReduceTasks:你的作业所指定的reducer的个数，决定了reduce作业输出文件的个数
+HashPartitioner是MapReducer默认的分区规则
+
+
+reducer个数：3
+1 % 3 = 1
+2 % 3 = 2
+3 % 3 = 3
+
+需求：将统计结构按照手机号的前缀进行区分，并输出到不同的输出文件中去
+    13* ==> ..
+    15* ==> ..
+    other ==> ..
+
+Partitioner决定maptasks输出的数据交由哪个reducetask处理
+**面试常考：默认实现：分发的key的hash值与reduce task个数取模
