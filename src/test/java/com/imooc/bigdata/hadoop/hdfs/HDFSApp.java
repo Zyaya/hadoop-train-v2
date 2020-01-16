@@ -70,7 +70,7 @@ public class HDFSApp {
      */
     @Test
     public void create() throws Exception{
-        FSDataOutputStream out = fileSystem.create(new Path("/hdfsapi/test/yaya.txt"));
+        FSDataOutputStream out = fileSystem.create(new Path("/hdfsapi/test/yaya2.txt"));
         out.writeUTF("hello pk:replication 1");
         out.flush();
         out.close();
