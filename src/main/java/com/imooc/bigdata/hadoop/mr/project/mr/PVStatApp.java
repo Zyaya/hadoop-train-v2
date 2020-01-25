@@ -30,8 +30,8 @@ public class PVStatApp {
         job.setOutputKeyClass(NullWritable.class);
         job.setOutputValueClass(LongWritable.class);
 
-        FileInputFormat.setInputPaths(job,new Path(""));
-        FileOutputFormat.setOutputPath(job, new Path(""));
+        FileInputFormat.setInputPaths(job,new Path("input/raw/trackinfo_20130721.data"));
+        FileOutputFormat.setOutputPath(job, new Path("output/v1/pvstat"));
 
         job.waitForCompletion(true);
     }
